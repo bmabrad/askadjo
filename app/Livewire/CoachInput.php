@@ -127,7 +127,7 @@ class CoachInput extends Component
             if ($hasScreenshots) {
                 foreach ($this->screenshots as $file) {
                     $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-                    $file->storeAs('', $filename, 'screenshots');
+                    $file->storeAs('', $filename, config('filesystems.screenshots'));
                     $screenshotPaths[] = $filename;
                 }
             }

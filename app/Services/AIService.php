@@ -62,7 +62,7 @@ class AIService implements AIServiceInterface
 
         if (! empty($screenshots)) {
             foreach ($screenshots as $path) {
-                $fileContents = Storage::disk('screenshots')->get($path);
+                $fileContents = Storage::disk(config('filesystems.screenshots'))->get($path);
                 if ($fileContents) {
                     $base64 = base64_encode($fileContents);
                     $mimeType = $this->guessMimeType($path);

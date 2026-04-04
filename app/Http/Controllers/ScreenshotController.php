@@ -10,7 +10,7 @@ class ScreenshotController extends Controller
 {
     public function show(string $filename): Response
     {
-        $disk = Storage::disk('screenshots');
+        $disk = Storage::disk(config('filesystems.screenshots'));
 
         if (! $disk->exists($filename)) {
             abort(404);
