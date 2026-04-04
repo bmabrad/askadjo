@@ -1,4 +1,5 @@
 <div>
+    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
     {{-- Contact Selector (hidden in chat mode) --}}
     @unless($chatMode || $contactLocked)
         @if($contactId)
@@ -49,6 +50,7 @@
         <div
             x-data="{
                 hasImages: false,
+                uploading: false,
                 handlePaste(e) {
                     const items = e.clipboardData?.items;
                     if (!items) return;
@@ -58,6 +60,7 @@
                             const file = item.getAsFile();
                             if (file) {
                                 this.hasImages = true;
+                                this.uploading = true;
                                 const dt = new DataTransfer();
                                 dt.items.add(file);
                                 $refs.fileInput.files = dt.files;
@@ -75,11 +78,12 @@
                     });
                     window.dispatchEvent(new CustomEvent('coaching-started', { detail: { text: text.trim() || null, screenshots } }));
                     $refs.mainInput.value = '';
+                    $wire.set('textInput', '');
                     this.hasImages = false;
                 },
                 canSubmit() {
                     const text = ($wire.get('textInput') || '').trim();
-                    return text.length > 0 || this.hasImages;
+                    return (text.length > 0 || this.hasImages) && !this.uploading;
                 },
                 handleKeydown(e) {
                     if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
@@ -93,6 +97,9 @@
             }"
             x-init="$nextTick(() => $refs.mainInput?.focus())"
             @coach-response-received.window="$nextTick(() => $refs.mainInput?.focus())"
+            x-on:livewire-upload-start="uploading = true"
+            x-on:livewire-upload-finish="uploading = false"
+            x-on:livewire-upload-error="uploading = false"
         >
             <div style="display:flex;gap:0.5rem;align-items:flex-end;margin-bottom:0.75rem">
                 <textarea
@@ -106,8 +113,14 @@
                 ></textarea>
                 <label style="flex-shrink:0;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;cursor:pointer;color:var(--text-muted);font-size:1.25rem">
                     📎
-                    <input type="file" wire:model="screenshots" accept="image/jpeg,image/png,image/webp" multiple style="display:none" x-ref="fileInput" @change="hasImages = $el.files.length > 0">
+                    <input type="file" wire:model="screenshots" accept="image/jpeg,image/png,image/webp" multiple style="display:none" x-ref="fileInput" @change="hasImages = $el.files.length > 0; uploading = true">
                 </label>
+            </div>
+
+            {{-- Image upload indicator --}}
+            <div x-show="uploading" x-cloak style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0;margin-bottom:0.5rem">
+                <svg style="width:16px;height:16px;color:var(--text-muted);animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="12"/></svg>
+                <span style="font-size:0.8125rem;color:var(--text-muted)">Uploading image...</span>
             </div>
 
             @error('textInput') <div style="font-size:0.8125rem;color:var(--error);margin-bottom:0.5rem">{{ $message }}</div> @enderror
