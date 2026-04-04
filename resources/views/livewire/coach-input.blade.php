@@ -93,30 +93,31 @@
             }"
             x-init="$nextTick(() => $refs.mainInput?.focus())"
             @coach-response-received.window="$nextTick(() => $refs.mainInput?.focus())"
-            style="display:flex;gap:0.5rem;align-items:flex-end;margin-bottom:0.75rem"
         >
-            <textarea
-                x-ref="mainInput"
-                wire:model="textInput"
-                @paste="handlePaste($event)"
-                @keydown="handleKeydown($event)"
-                placeholder="Paste or type here..."
-                rows="2"
-                style="flex:1;padding:0.75rem 1rem;font-size:16px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);outline:none;resize:vertical;font-family:inherit;min-height:48px"
-            ></textarea>
-            <label style="flex-shrink:0;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;cursor:pointer;color:var(--text-muted);font-size:1.25rem">
-                📎
-                <input type="file" wire:model="screenshots" accept="image/jpeg,image/png,image/webp" multiple style="display:none" x-ref="fileInput" @change="hasImages = $el.files.length > 0">
-            </label>
+            <div style="display:flex;gap:0.5rem;align-items:flex-end;margin-bottom:0.75rem">
+                <textarea
+                    x-ref="mainInput"
+                    wire:model="textInput"
+                    @paste="handlePaste($event)"
+                    @keydown="handleKeydown($event)"
+                    placeholder="Paste or type here..."
+                    rows="2"
+                    style="flex:1;padding:0.75rem 1rem;font-size:16px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);outline:none;resize:vertical;font-family:inherit;min-height:48px"
+                ></textarea>
+                <label style="flex-shrink:0;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;cursor:pointer;color:var(--text-muted);font-size:1.25rem">
+                    📎
+                    <input type="file" wire:model="screenshots" accept="image/jpeg,image/png,image/webp" multiple style="display:none" x-ref="fileInput" @change="hasImages = $el.files.length > 0">
+                </label>
+            </div>
+
+            @error('textInput') <div style="font-size:0.8125rem;color:var(--error);margin-bottom:0.5rem">{{ $message }}</div> @enderror
+
+            {{-- Submit --}}
+            <button @click="dispatchStarted(); $wire.submit()" style="width:100%;height:48px;font-size:1rem;font-weight:600;background:var(--btn-primary-bg);color:var(--btn-primary-text);border:none;border-radius:8px;cursor:pointer">Coach Me</button>
+
+            @if($error)
+                <div style="margin-top:0.75rem;font-size:0.875rem;color:var(--error);text-align:center">{{ $error }}</div>
+            @endif
         </div>
-
-        @error('textInput') <div style="font-size:0.8125rem;color:var(--error);margin-bottom:0.5rem">{{ $message }}</div> @enderror
-
-        {{-- Submit --}}
-        <button @click="dispatchStarted(); $wire.submit()" style="width:100%;height:48px;font-size:1rem;font-weight:600;background:var(--btn-primary-bg);color:var(--btn-primary-text);border:none;border-radius:8px;cursor:pointer">Coach Me</button>
-
-        @if($error)
-            <div style="margin-top:0.75rem;font-size:0.875rem;color:var(--error);text-align:center">{{ $error }}</div>
-        @endif
     @endif
 </div>
