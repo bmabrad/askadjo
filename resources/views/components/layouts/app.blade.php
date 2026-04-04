@@ -117,17 +117,41 @@
         .app-header .header-actions a:hover {
             color: var(--text-primary);
         }
+        .app-header .header-actions button {
+            transition: color 0.15s;
+        }
+        .app-header .header-actions button:hover {
+            color: var(--text-primary);
+        }
         .app-content {
             max-width: 600px;
             margin: 0 auto;
             padding: 1rem;
         }
+
+        /* Theme switcher */
+        .theme-switcher { display: inline-flex; align-items: center; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 20px; padding: 3px; gap: 2px; }
+        .theme-btn { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: none; border-radius: 50%; background: transparent; color: var(--text-muted); cursor: pointer; transition: color 0.15s, background-color 0.15s; }
+        .theme-btn:hover { color: var(--text-secondary); }
+        .theme-btn.active { background: var(--bg-card); color: var(--text-primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .theme-btn svg { width: 14px; height: 14px; }
     </style>
 </head>
 <body>
     <header class="app-header">
         <a href="{{ route('dashboard') }}" class="logo" style="text-decoration:none;color:var(--text-primary)">AskAdjo</a>
         <div class="header-actions">
+            <div class="theme-switcher">
+                <button class="theme-btn" data-theme-choice="light" title="Light mode">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </button>
+                <button class="theme-btn" data-theme-choice="system" title="System preference">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </button>
+                <button class="theme-btn" data-theme-choice="dark" title="Dark mode">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+            </div>
             <a href="{{ route('settings') }}">Settings</a>
             <form method="POST" action="{{ route('logout') }}" style="display:inline">
                 @csrf
@@ -139,5 +163,30 @@
         {{ $slot }}
     </main>
     @livewireScripts
+    <script>
+        // ── Theme ──
+        function getSystemTheme() {
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        function applyTheme(choice) {
+            var resolved = choice === 'system' ? getSystemTheme() : choice;
+            document.documentElement.setAttribute('data-theme', resolved);
+            document.querySelectorAll('.theme-btn').forEach(function(btn) {
+                btn.classList.toggle('active', btn.getAttribute('data-theme-choice') === choice);
+            });
+            try { localStorage.setItem('askadjo-theme', choice); } catch(e) {}
+        }
+        var saved = null;
+        try { saved = localStorage.getItem('askadjo-theme'); } catch(e) {}
+        applyTheme(saved || 'dark');
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+            var current = null;
+            try { current = localStorage.getItem('askadjo-theme'); } catch(e) {}
+            if (current === 'system') applyTheme('system');
+        });
+        document.querySelectorAll('.theme-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() { applyTheme(this.getAttribute('data-theme-choice')); });
+        });
+    </script>
 </body>
 </html>
