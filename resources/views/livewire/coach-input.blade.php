@@ -79,6 +79,7 @@
                     window.dispatchEvent(new CustomEvent('coaching-started', { detail: { text: text.trim() || null, screenshots } }));
                     $refs.mainInput.value = '';
                     $wire.set('textInput', '');
+                    $wire.set('screenshots', []);
                     this.hasImages = false;
                 },
                 canSubmit() {
