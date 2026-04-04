@@ -154,7 +154,9 @@ class CoachInput extends Component
             // Auto-focus input after response
             $this->dispatch('coach-response-received');
         } catch (\Throwable $e) {
+            report($e);
             $this->error = "Something went wrong. Try a cleaner screenshot or paste the text instead.";
+            $this->dispatch('coaching-failed');
         } finally {
             $this->isSubmitting = false;
         }
