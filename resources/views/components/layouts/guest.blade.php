@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Collaborate AI') }}</title>
+    <title>{{ config('app.name', 'AskAdjo') }}</title>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
@@ -125,7 +125,7 @@
 </head>
 <body>
     <div class="guest-container">
-        <div class="logo">Collaborate.ai</div>
+        <div class="logo">AskAdjo</div>
         <div class="card">
             {{ $slot }}
         </div>

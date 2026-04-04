@@ -15,7 +15,7 @@
     @if($contacts->isEmpty() && !$search)
         {{-- Empty State: New User --}}
         <div style="text-align:center;padding:3rem 1rem">
-            <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:0.75rem">Welcome to Collaborate.ai</h2>
+            <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:0.75rem">Welcome to AskAdjo</h2>
             <p style="color:var(--text-secondary);font-size:0.9375rem;line-height:1.6;margin-bottom:1.5rem">
                 Screenshot a conversation.<br>
                 Get coached.<br>

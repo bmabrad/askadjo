@@ -69,7 +69,7 @@ it('shows no results message for empty search', function () {
 
 it('shows empty state for new user', function () {
     Livewire::test(Dashboard::class)
-        ->assertSee('Welcome to Collaborate.ai')
+        ->assertSee('Welcome to AskAdjo')
         ->assertSee('Start Your First Session');
 });
 

@@ -8,6 +8,15 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ScreenshotController;
 use Illuminate\Support\Facades\Route;
 
+// Home page — guests see sales page, auth users redirect to coach
+Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('coach');
+    }
+
+    return view('home');
+})->name('home');
+
 // Guest routes
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
@@ -29,7 +38,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/welcome', fn () => view('auth.welcome'))->name('welcome');
 
-    Route::get('/', fn () => redirect()->route('coach'));
     Route::get('/coach', \App\Livewire\CoachWindow::class)->name('coach');
     Route::get('/dashboard', fn () => redirect()->route('coach'))->name('dashboard');
     Route::get('/settings', \App\Livewire\SettingsPage::class)->name('settings');

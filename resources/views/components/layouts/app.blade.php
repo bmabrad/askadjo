@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Collaborate AI') }}</title>
+    <title>{{ config('app.name', 'AskAdjo') }}</title>
     @livewireStyles
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -79,7 +79,7 @@
 </head>
 <body>
     <header class="app-header">
-        <a href="{{ route('dashboard') }}" class="logo" style="text-decoration:none;color:var(--text-primary)">Collaborate.ai</a>
+        <a href="{{ route('dashboard') }}" class="logo" style="text-decoration:none;color:var(--text-primary)">AskAdjo</a>
         <div class="header-actions">
             <a href="{{ route('settings') }}">Settings</a>
             <form method="POST" action="{{ route('logout') }}" style="display:inline">
