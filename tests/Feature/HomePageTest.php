@@ -7,7 +7,7 @@ it('shows the sales page for guests', function () {
         ->assertOk()
         ->assertSee('AskAdjo')
         ->assertSee('Stop guessing.')
-        ->assertSee('Create Your Account')
+        ->assertSee('Get started free')
         ->assertSee('Log in');
 });
 
@@ -30,9 +30,9 @@ it('shows how it works section', function () {
     $this->get('/')
         ->assertOk()
         ->assertSee('How It Works')
-        ->assertSee('Paste or screenshot your conversation')
-        ->assertSee('Get a read on the situation')
-        ->assertSee('Pick a reply and send it');
+        ->assertSee('Paste or screenshot')
+        ->assertSee('Get the read')
+        ->assertSee('Pick and send');
 });
 
 it('shows what you get section', function () {
@@ -41,5 +41,5 @@ it('shows what you get section', function () {
         ->assertSee('What You Get')
         ->assertSee('Situation read')
         ->assertSee('Reply options')
-        ->assertSee('The why behind each reply');
+        ->assertSee('The why');
 });

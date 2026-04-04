@@ -1,28 +1,60 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'AskAdjo') }}</title>
+    <script>
+        (function(){
+            var t;try{t=localStorage.getItem('askadjo-theme')}catch(e){}
+            if(!t)t='dark';
+            var r=t==='system'?(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'):t;
+            document.documentElement.setAttribute('data-theme',r);
+        })();
+    </script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --bg-primary: #0F0F0F;
-            --bg-card: #1A1A1A;
+            --transition-speed: 0.25s;
+            --accent: #d97757;
+            --error: #FF6B6B;
+        }
+        [data-theme="dark"] {
+            --bg-primary: #131314;
+            --bg-secondary: #1a1a1c;
+            --bg-card: #1e1e20;
             --bg-input: #252525;
             --bg-hover: #2A2A2A;
-            --text-primary: #E5E5E5;
-            --text-secondary: #999999;
-            --text-muted: #555555;
-            --border: #333333;
+            --text-primary: #ececec;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border: #2a2a2c;
+            --border-hover: #3a3a3c;
             --border-focus: #777777;
-            --btn-primary-bg: #E5E5E5;
-            --btn-primary-text: #0F0F0F;
+            --btn-primary-bg: #ececec;
+            --btn-primary-text: #131314;
             --btn-secondary-bg: transparent;
-            --btn-secondary-border: #555555;
-            --btn-secondary-text: #E5E5E5;
-            --error: #FF6B6B;
+            --btn-secondary-border: #3a3a3c;
+            --btn-secondary-text: #ececec;
+        }
+        [data-theme="light"] {
+            --bg-primary: #fafaf9;
+            --bg-secondary: #f0efed;
+            --bg-card: #ffffff;
+            --bg-input: #f5f5f4;
+            --bg-hover: #eaeae8;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --text-muted: #999999;
+            --border: #e5e4e2;
+            --border-hover: #d0cfcc;
+            --border-focus: #aaaaaa;
+            --btn-primary-bg: #1a1a1a;
+            --btn-primary-text: #fafaf9;
+            --btn-secondary-bg: transparent;
+            --btn-secondary-border: #d0cfcc;
+            --btn-secondary-text: #1a1a1a;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -33,6 +65,7 @@
             align-items: center;
             justify-content: center;
             padding: 1rem;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
         }
         .guest-container {
             width: 100%;
