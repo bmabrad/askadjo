@@ -23,7 +23,7 @@ class AIService implements AIServiceInterface
         $response = Http::withHeaders([
             'x-api-key' => $this->apiKey,
             'anthropic-version' => '2023-06-01',
-        ])->timeout(30)->post('https://api.anthropic.com/v1/messages', [
+        ])->timeout((int) config('services.anthropic.timeout', 60))->post('https://api.anthropic.com/v1/messages', [
             'model' => $this->model,
             'max_tokens' => 1024,
             'system' => CoachingPrompt::system(),

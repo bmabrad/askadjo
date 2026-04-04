@@ -155,18 +155,14 @@
         <div
             x-show="coaching"
             x-cloak
-            x-data="{ messages: ['Reading between the lines...', 'Checking the playbook...', 'Analysing the frame...'], current: 0, interval: null }"
-            x-init="interval = setInterval(() => current = (current + 1) % messages.length, 2000)"
-            x-effect="if (!coaching && interval) { clearInterval(interval); interval = null } else if (coaching && !interval) { interval = setInterval(() => current = (current + 1) % messages.length, 2000) }"
             style="display:flex;justify-content:flex-start;margin-bottom:0.75rem"
         >
-            <div style="padding:1rem;background:var(--coach-bubble);border:1px solid var(--coach-bubble-border);border-radius:16px 16px 16px 4px;max-width:85%">
-                <div style="display:flex;gap:0.375rem;margin-bottom:0.5rem">
+            <div style="padding:1rem;background:var(--coach-bubble);border:1px solid var(--coach-bubble-border);border-radius:16px 16px 16px 4px">
+                <div style="display:flex;gap:0.375rem">
                     <span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);animation:pulse 1.4s ease-in-out infinite"></span>
                     <span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);animation:pulse 1.4s ease-in-out 0.2s infinite"></span>
                     <span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);animation:pulse 1.4s ease-in-out 0.4s infinite"></span>
                 </div>
-                <p style="margin:0;font-size:0.8125rem;color:var(--text-secondary)" x-text="messages[current]"></p>
             </div>
         </div>
         <style>@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}</style>
