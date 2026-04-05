@@ -125,7 +125,7 @@ class CoachInput extends Component
         if (empty(config('services.anthropic.api_key'))) {
             $this->error = "AI service is not configured. Please check the API key.";
             $this->isSubmitting = false;
-            $this->dispatch('coaching-failed');
+            $this->js("window.dispatchEvent(new CustomEvent('coaching-failed'))");
             return;
         }
 
@@ -170,7 +170,7 @@ class CoachInput extends Component
                 $this->error = "Something went wrong. Please try again in a few minutes.";
             }
 
-            $this->dispatch('coaching-failed');
+            $this->js("window.dispatchEvent(new CustomEvent('coaching-failed'))");
         } finally {
             $this->isSubmitting = false;
         }
