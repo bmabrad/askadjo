@@ -1,6 +1,6 @@
 @props(['title', 'showClose' => true])
 
-<div x-data style="display:flex;align-items:center;padding:0 10px 12px;border-bottom:1px solid var(--border-card)">
+<div x-data style="display:flex;align-items:center;padding:0 10px 12px;border-bottom:1px solid var(--border-card);margin-bottom:1rem">
     {{-- Back arrow — opens slide-out menu --}}
     <button
         @click="$dispatch('toggle-slide-menu')"
