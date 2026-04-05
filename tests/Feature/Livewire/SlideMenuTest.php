@@ -39,6 +39,13 @@ it('displays four menu items', function () {
         ->assertSee('Quick Reference');
 });
 
+it('displays V2 coming soon items', function () {
+    Livewire::test(SlideMenu::class)
+        ->assertSee('Coming in V2')
+        ->assertSee('Example Messages')
+        ->assertSee('Profile Photos');
+});
+
 it('strat chat links correctly', function () {
     Livewire::test(SlideMenu::class)
         ->assertSee(route('strat-chat'));

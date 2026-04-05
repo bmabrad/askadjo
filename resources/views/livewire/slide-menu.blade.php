@@ -76,6 +76,41 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--chevron-color, #8C7A5E)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg>
                 </a>
             @endforeach
+
+            {{-- V2 Divider --}}
+            <div style="display:flex;align-items:center;gap:10px;margin:6px 0 14px">
+                <div style="flex:1;height:1px;background:var(--border-card, var(--border))"></div>
+                <span style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;white-space:nowrap">Coming in V2</span>
+                <div style="flex:1;height:1px;background:var(--border-card, var(--border))"></div>
+            </div>
+
+            {{-- V2 Cards (display-only, reduced opacity) --}}
+            @php
+                $v2Items = [
+                    ['icon' => 'speech', 'title' => 'Example Messages', 'subtitle' => '44 Real Conversations By Situation.'],
+                    ['icon' => 'camera', 'title' => 'Profile Photos', 'subtitle' => 'The 6 Photos Your Profile Needs.'],
+                ];
+            @endphp
+
+            @foreach($v2Items as $item)
+                <div style="display:flex;align-items:center;gap:11px;padding:18px 20px;margin-bottom:14px;border-radius:14px;border:1px solid var(--border-card, var(--border));background:var(--bg-card, var(--bg-secondary));opacity:0.5">
+                    {{-- Icon Container --}}
+                    <div style="width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--bg-icon, var(--bg-input));border:1px solid var(--border-icon, var(--border));flex-shrink:0">
+                        @if($item['icon'] === 'speech')
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--icon-color, #E8B86A)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        @elseif($item['icon'] === 'camera')
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--icon-color, #E8B86A)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                        @endif
+                    </div>
+                    {{-- Text --}}
+                    <div style="flex:1;min-width:0">
+                        <div style="font-size:16px;font-weight:700;color:var(--text-primary)">{{ $item['title'] }}</div>
+                        <div style="font-size:11px;color:var(--text-secondary);margin-top:2px">{{ $item['subtitle'] }}</div>
+                    </div>
+                    {{-- Chevron --}}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--chevron-color, #8C7A5E)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg>
+                </div>
+            @endforeach
         </div>
 
         {{-- User Bar --}}
