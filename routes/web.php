@@ -32,21 +32,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset-password', [ResetPasswordController::class, 'store'])->name('password.update');
 });
 
-// Temporary debug route — REMOVE after Cloud config is verified
-Route::middleware('auth')->get('/debug-env', function () {
-    return response()->json([
-        'AWS_ACCESS_KEY_ID' => env('AWS_ACCESS_KEY_ID') ? '✓ set (' . substr(env('AWS_ACCESS_KEY_ID'), 0, 6) . '...)' : '✗ missing',
-        'AWS_SECRET_ACCESS_KEY' => env('AWS_SECRET_ACCESS_KEY') ? '✓ set' : '✗ missing',
-        'AWS_DEFAULT_REGION' => env('AWS_DEFAULT_REGION') ?: '✗ missing',
-        'AWS_BUCKET' => env('AWS_BUCKET') ?: '✗ missing',
-        'FILESYSTEM_DISK' => env('FILESYSTEM_DISK') ?: '✗ missing',
-        'SCREENSHOTS_DISK' => env('SCREENSHOTS_DISK') ?: '✗ missing',
-        'ANTHROPIC_API_KEY' => env('ANTHROPIC_API_KEY') ? '✓ set (' . substr(env('ANTHROPIC_API_KEY'), 0, 10) . '...)' : '✗ missing',
-        'ANTHROPIC_MODEL' => env('ANTHROPIC_MODEL') ?: '✗ missing',
-        'all_aws_keys' => collect($_ENV)->filter(fn ($v, $k) => str_starts_with($k, 'AWS') || str_starts_with($k, 'S3') || str_starts_with($k, 'FILESYSTEM'))->keys()->toArray(),
-    ]);
-});
-
 // Auth routes
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
