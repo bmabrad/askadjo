@@ -6,13 +6,15 @@ it('contains key methodology principles', function () {
     $prompt = CoachingPrompt::system();
 
     expect($prompt)
-        ->toContain('Evaluator Frame')
+        ->toContain('The Master Rule')
         ->toContain('Low Perceived Effort')
-        ->toContain('Intermittent Positive Reinforcement')
-        ->toContain('Curiosity Gaps')
-        ->toContain('Frame Control')
-        ->toContain('Embedded Triggers')
-        ->toContain('The Master Rule');
+        ->toContain('Discerning Man')
+        ->toContain('12 Triggers Ranked')
+        ->toContain('7 Chase Mechanisms')
+        ->toContain('Text Game (21 Rules)')
+        ->toContain('Reframing')
+        ->toContain('Relationship Power')
+        ->toContain('Emergency Reset Questions');
 });
 
 it('requests JSON response format', function () {
@@ -52,13 +54,39 @@ it('includes contact summary instructions', function () {
         ->toContain('under 200 words');
 });
 
-it('includes situational message library', function () {
+it('includes the full playbook as Part 2', function () {
     $prompt = CoachingPrompt::system();
 
     expect($prompt)
+        ->toContain('PART 2: THE FULL PLAYBOOK')
+        ->toContain('PHASE 1: THE 4 MINDSET SHIFTS')
+        ->toContain('THE 7 CHASE MECHANISMS')
+        ->toContain('TEXT GAME: THE 21 RULES')
+        ->toContain('EMERGENCY RESET QUESTIONS');
+});
+
+it('includes the situational library as Part 3', function () {
+    $prompt = CoachingPrompt::system();
+
+    expect($prompt)
+        ->toContain('PART 3: SITUATIONAL MESSAGE LIBRARY')
         ->toContain('Situational Message Library')
         ->toContain('OPENING')
-        ->toContain('BUILDING ATTRACTION');
+        ->toContain('BUILDING ATTRACTION')
+        ->toContain('HANDLING HER QUESTIONS');
+});
+
+it('contains all three parts concatenated', function () {
+    $prompt = CoachingPrompt::system();
+
+    expect($prompt)
+        ->toContain('PART 2: THE FULL PLAYBOOK')
+        ->toContain('PART 3: SITUATIONAL MESSAGE LIBRARY');
+
+    // Verify ordering: Part 2 comes before Part 3
+    $part2Pos = strpos($prompt, 'PART 2: THE FULL PLAYBOOK');
+    $part3Pos = strpos($prompt, 'PART 3: SITUATIONAL MESSAGE LIBRARY');
+    expect($part2Pos)->toBeLessThan($part3Pos);
 });
 
 it('builds user message with contact summary', function () {
