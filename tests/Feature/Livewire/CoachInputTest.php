@@ -149,3 +149,63 @@ it('locks contact when preset via mount', function () {
         ->assertSet('contactId', $this->contact->id)
         ->assertSet('contactLocked', true);
 });
+
+it('submits in chat mode without requiring a contact', function () {
+    Livewire::test(CoachInput::class, ['chatMode' => true])
+        ->set('textInput', 'Her: Hey how are you?\nMe: Good, you?')
+        ->call('submit')
+        ->assertHasNoErrors()
+        ->assertDispatched('coaching-session-created');
+});
+
+it('clears inputs after successful submit', function () {
+    Livewire::test(CoachInput::class)
+        ->set('contactId', $this->contact->id)
+        ->set('textInput', 'Her: Hey\nMe: Hello')
+        ->call('submit')
+        ->assertSet('textInput', '')
+        ->assertSet('screenshots', [])
+        ->assertSet('error', null)
+        ->assertSet('isSubmitting', false);
+});
+
+it('shows error when API key is missing', function () {
+    config(['services.anthropic.api_key' => null]);
+
+    Livewire::test(CoachInput::class)
+        ->set('contactId', $this->contact->id)
+        ->set('textInput', 'Her: Hey\nMe: Hello')
+        ->call('submit')
+        ->assertSet('error', 'AI service is not configured. Please check the API key.')
+        ->assertSet('isSubmitting', false);
+});
+
+it('shows credit exhaustion error message', function () {
+    $mock = Mockery::mock(\App\Services\CoachingService::class);
+    $mock->shouldReceive('coach')->andThrow(new \RuntimeException('SERVICE_CREDITS_EXHAUSTED'));
+    app()->instance(\App\Services\CoachingService::class, $mock);
+
+    Livewire::test(CoachInput::class)
+        ->set('contactId', $this->contact->id)
+        ->set('textInput', 'Her: Hey\nMe: Hello')
+        ->call('submit')
+        ->assertSet('error', 'Our AI service is temporarily unavailable. Please try again in a few minutes.');
+});
+
+it('submits with both text and screenshots together', function () {
+    Livewire::test(CoachInput::class)
+        ->set('contactId', $this->contact->id)
+        ->set('textInput', 'Context for this screenshot')
+        ->set('screenshots', [UploadedFile::fake()->image('chat.jpg', 400, 800)])
+        ->call('submit')
+        ->assertHasNoErrors()
+        ->assertDispatched('coaching-session-created');
+});
+
+it('dispatches coach-response-received after successful submit', function () {
+    Livewire::test(CoachInput::class)
+        ->set('contactId', $this->contact->id)
+        ->set('textInput', 'Her: Hey\nMe: Hello')
+        ->call('submit')
+        ->assertDispatched('coach-response-received');
+});

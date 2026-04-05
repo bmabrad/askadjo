@@ -49,7 +49,13 @@ class CoachingService
             Log::error('AI coaching failed', [
                 'session_id' => $session->id,
                 'error' => $e->getMessage(),
+                'class' => get_class($e),
             ]);
+
+            // Clean up the empty session
+            $session->delete();
+
+            throw $e;
         }
 
         return $session->fresh();
@@ -94,21 +100,12 @@ class CoachingService
 
             return $session->fresh()->load('contact');
         } catch (\Throwable $e) {
-            Log::error('AI coaching failed', ['error' => $e->getMessage()]);
-
-            // Create a pending session with no contact
-            $placeholder = $user->contacts()->create([
-                'name' => 'Unknown',
-                'platform' => Platform::Other,
+            Log::error('AI coaching failed', [
+                'error' => $e->getMessage(),
+                'class' => get_class($e),
             ]);
 
-            $session = $placeholder->coachingSessions()->create([
-                'input_type' => $inputType,
-                'raw_text' => $text,
-                'screenshot_path' => ! empty($screenshotPaths) ? $screenshotPaths : null,
-            ]);
-
-            return $session->fresh()->load('contact');
+            throw $e;
         }
     }
 

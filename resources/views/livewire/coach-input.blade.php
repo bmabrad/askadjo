@@ -75,7 +75,8 @@
                 },
                 canSubmit() {
                     const text = ($wire.get('textInput') || '').trim();
-                    return (text.length > 0 || this.hasImages) && !this.uploading;
+                    const hasScreenshots = this.hasImages || ($wire.get('screenshots') || []).length > 0;
+                    return (text.length > 0 || hasScreenshots) && !this.uploading;
                 },
                 handleKeydown(e) {
                     if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey && !e.shiftKey) {

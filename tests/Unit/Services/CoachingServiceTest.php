@@ -63,7 +63,7 @@ it('writes contact summary update back to contact', function () {
         ->and($this->contact->fresh()->ai_summary)->toContain('Sophie');
 });
 
-it('handles AI failure gracefully', function () {
+it('rethrows AI failure so caller can handle it', function () {
     $failingAI = new class implements AIServiceInterface {
         public function analyseConversation(?string $text, array $screenshots = [], ?string $contactSummary = null): array
         {
@@ -72,9 +72,10 @@ it('handles AI failure gracefully', function () {
     };
 
     $service = new CoachingService($failingAI);
-    $session = $service->coach($this->contact, 'Test');
 
-    expect($session->situation_read)->toBeNull()
-        ->and($session->reply_options)->toBeNull()
-        ->and($session->raw_text)->toBe('Test');
+    expect(fn () => $service->coach($this->contact, 'Test'))
+        ->toThrow(\RuntimeException::class, 'API error');
+
+    // Ensure no orphan session was left behind
+    expect($this->contact->coachingSessions()->count())->toBe(0);
 });
