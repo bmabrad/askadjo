@@ -1,8 +1,15 @@
 <div
-    x-data="{ coaching: false, pendingText: null, pendingScreenshots: [] }"
-    @coaching-started.window="coaching = true; pendingText = $event.detail?.text || null; pendingScreenshots = $event.detail?.screenshots || []; $nextTick(() => { $refs.chatContainer && ($refs.chatContainer.scrollTop = $refs.chatContainer.scrollHeight) })"
-    @coaching-session-created.window="coaching = false; pendingText = null; pendingScreenshots = []"
-    @coaching-failed.window="coaching = false; pendingText = null; pendingScreenshots = []"
+    x-data="{ coaching: false, pendingText: null, pendingScreenshots: [], coachingTimer: null }"
+    @coaching-started.window="
+        coaching = true;
+        pendingText = $event.detail?.text || null;
+        pendingScreenshots = $event.detail?.screenshots || [];
+        clearTimeout(coachingTimer);
+        coachingTimer = setTimeout(() => { coaching = false; pendingText = null; pendingScreenshots = []; }, 35000);
+        $nextTick(() => { $refs.chatContainer && ($refs.chatContainer.scrollTop = $refs.chatContainer.scrollHeight) });
+    "
+    @coaching-session-created.window="coaching = false; pendingText = null; pendingScreenshots = []; clearTimeout(coachingTimer)"
+    @coaching-failed.window="coaching = false; pendingText = null; pendingScreenshots = []; clearTimeout(coachingTimer)"
     x-init="$nextTick(() => { $refs.chatContainer && ($refs.chatContainer.scrollTop = $refs.chatContainer.scrollHeight) })"
 >
     {{-- Chat Thread --}}
