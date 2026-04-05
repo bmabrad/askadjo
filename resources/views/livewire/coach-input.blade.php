@@ -81,9 +81,8 @@
                         if (img.src) screenshots.push(img.src);
                     });
                     window.dispatchEvent(new CustomEvent('coaching-started', { detail: { text: text.trim() || null, screenshots } }));
+                    // Clear UI immediately but DON'T clear Livewire state — submit() needs it
                     $refs.mainInput.value = '';
-                    $wire.set('textInput', '');
-                    $wire.set('screenshots', []);
                     this.hasImages = false;
                 },
                 canSubmit() {
