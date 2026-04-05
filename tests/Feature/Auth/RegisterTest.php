@@ -15,7 +15,7 @@ it('allows new users to register', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('welcome'));
+    $response->assertRedirect(route('onboarding'));
 });
 
 it('requires valid registration data', function () {

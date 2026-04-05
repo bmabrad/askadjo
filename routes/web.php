@@ -8,13 +8,9 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ScreenshotController;
 use Illuminate\Support\Facades\Route;
 
-// Home page — guests see sales page, auth users redirect to coach
+// Root — auth users go to strat-chat, guests go to login
 Route::get('/', function () {
-    if (auth()->check()) {
-        return redirect()->route('coach');
-    }
-
-    return view('home');
+    return redirect()->route(auth()->check() ? 'strat-chat' : 'login');
 })->name('home');
 
 // Guest routes
@@ -36,11 +32,15 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
-    Route::get('/welcome', fn () => view('auth.welcome'))->name('welcome');
-
-    Route::get('/coach', \App\Livewire\CoachWindow::class)->name('coach');
-    Route::get('/dashboard', fn () => redirect()->route('coach'))->name('dashboard');
+    Route::get('/onboarding', \App\Livewire\Onboarding::class)->name('onboarding');
+    Route::get('/strat-chat', \App\Livewire\StratChat::class)->name('strat-chat');
+    Route::get('/dashboard', fn () => redirect()->route('strat-chat'))->name('dashboard');
     Route::get('/settings', \App\Livewire\SettingsPage::class)->name('settings');
+
+    // Content pages
+    Route::get('/mindset', \App\Livewire\TheMindset::class)->name('mindset');
+    Route::get('/playbook', \App\Livewire\ThePlaybook::class)->name('playbook');
+    Route::get('/quick-ref', \App\Livewire\QuickReference::class)->name('quick-ref');
 
     // Screenshots
     Route::get('/screenshots/{filename}', [ScreenshotController::class, 'show'])->name('screenshots.show');

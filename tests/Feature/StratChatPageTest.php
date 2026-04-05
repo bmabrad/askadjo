@@ -2,19 +2,19 @@
 
 use App\Models\User;
 
-it('loads the coach page for authenticated user', function () {
+it('loads the strat-chat page for authenticated user', function () {
     $this->actingAs(User::factory()->create())
-        ->get(route('coach'))
+        ->get(route('strat-chat'))
         ->assertOk();
 });
 
 it('requires authentication', function () {
-    $this->get('/coach')
+    $this->get('/strat-chat')
         ->assertRedirect(route('login'));
 });
 
-it('redirects dashboard to coach', function () {
+it('redirects dashboard to strat-chat', function () {
     $this->actingAs(User::factory()->create())
         ->get('/dashboard')
-        ->assertRedirect(route('coach'));
+        ->assertRedirect(route('strat-chat'));
 });

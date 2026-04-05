@@ -58,14 +58,25 @@
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-primary);
+            background: var(--bg-secondary);
             color: var(--text-primary);
             min-height: 100vh;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+        .phone-frame {
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--bg-primary);
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1rem;
-            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+        @media (max-width: 430px) {
+            .phone-frame { border-left: none; border-right: none; }
         }
         .guest-container {
             width: 100%;
@@ -157,10 +168,12 @@
     </style>
 </head>
 <body>
-    <div class="guest-container">
-        <div class="logo">AskAdjo</div>
-        <div class="card">
-            {{ $slot }}
+    <div class="phone-frame">
+        <div class="guest-container">
+            <div class="logo">AskAdjo</div>
+            <div class="card">
+                {{ $slot }}
+            </div>
         </div>
     </div>
 </body>

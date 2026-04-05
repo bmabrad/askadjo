@@ -2,7 +2,7 @@
     {{-- Thread Header --}}
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)">
         <div style="display:flex;align-items:center;gap:0.75rem">
-            <a href="{{ route('dashboard') }}" style="color:var(--text-secondary);text-decoration:none;font-size:1.25rem">&larr;</a>
+            <a href="{{ route('strat-chat') }}" style="color:var(--text-secondary);text-decoration:none;font-size:1.25rem">&larr;</a>
             <div>
                 <h1 style="font-size:1.125rem;font-weight:600;margin:0">{{ $contact->name }}</h1>
                 <span style="font-size:0.75rem;color:var(--text-muted)">{{ $contact->platform->name }}</span>

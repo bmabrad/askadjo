@@ -26,7 +26,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('coach'));
+        return redirect()->intended(route('strat-chat'));
     }
 
     public function destroy(Request $request): RedirectResponse

@@ -10,7 +10,7 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 
 #[Layout('components.layouts.app')]
-class CoachWindow extends Component
+class StratChat extends Component
 {
     public $sessions;
     public ?int $pendingNameSessionId = null;
@@ -91,7 +91,6 @@ class CoachWindow extends Component
         $latest = $this->sessions->last();
 
         // Only prompt for name when this is the user's first ever session and the contact is Unknown
-        // (CHANGE-6: subsequent sessions with no name fall back to most recent contact)
         if ($latest->contact
             && $latest->contact->name === 'Unknown'
             && $latest->situation_read
@@ -103,6 +102,6 @@ class CoachWindow extends Component
 
     public function render()
     {
-        return view('livewire.coach-window');
+        return view('livewire.strat-chat');
     }
 }

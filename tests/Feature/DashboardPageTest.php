@@ -7,17 +7,17 @@ it('redirects unauthenticated dashboard to login', function () {
         ->assertRedirect(route('login'));
 });
 
-it('redirects authenticated dashboard to coach', function () {
+it('redirects authenticated dashboard to strat-chat', function () {
     $this->actingAs(User::factory()->create())
         ->get('/dashboard')
-        ->assertRedirect(route('coach'));
+        ->assertRedirect(route('strat-chat'));
 });
 
-it('redirects to coach after login', function () {
+it('redirects to strat-chat after login', function () {
     $user = User::factory()->create(['password' => bcrypt('password123')]);
 
     $this->post(route('login'), [
         'email' => $user->email,
         'password' => 'password123',
-    ])->assertRedirect(route('coach'));
+    ])->assertRedirect(route('strat-chat'));
 });

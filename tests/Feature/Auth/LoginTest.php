@@ -15,7 +15,7 @@ it('allows users to log in with valid credentials', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('coach'));
+    $response->assertRedirect(route('strat-chat'));
 });
 
 it('rejects invalid password', function () {
