@@ -131,7 +131,7 @@
             @error('textInput') <div style="font-size:0.8125rem;color:var(--error);margin-bottom:0.5rem">{{ $message }}</div> @enderror
 
             {{-- Submit --}}
-            <button @click="dispatchStarted(); $wire.submit()" style="width:100%;height:48px;font-size:1rem;font-weight:600;background:var(--btn-primary-bg);color:var(--btn-primary-text);border:none;border-radius:8px;cursor:pointer">Coach Me</button>
+            <button @click="dispatchStarted(); $wire.submit()" style="width:100%;height:48px;font-size:1rem;font-weight:600;background:var(--btn-primary-bg);color:var(--btn-primary-text);border:none;border-radius:8px;cursor:pointer">Ask Me</button>
 
         </div>
     @endif
