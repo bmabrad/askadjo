@@ -13,8 +13,8 @@
             startX: 0,
             deltaX: 0,
             swiping: false,
-            next() { if (this.currentCard < 7) { this.currentCard++; $wire.nextCard(); } },
-            prev() { if (this.currentCard > 0) { this.currentCard--; $wire.prevCard(); } }
+            next() { if (this.currentCard < 7) { $wire.nextCard(); } },
+            prev() { if (this.currentCard > 0) { $wire.prevCard(); } }
         }"
         x-on:keydown.arrow-right.window="next()"
         x-on:keydown.arrow-left.window="prev()"
