@@ -1,9 +1,5 @@
 <div>
-    {{-- Header --}}
-    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)">
-        <a href="{{ route('strat-chat') }}" style="color:var(--text-secondary);text-decoration:none;font-size:1.25rem">&larr;</a>
-        <h1 style="font-size:1.25rem;font-weight:700;margin:0">Settings</h1>
-    </div>
+    @include('partials.page-header', ['title' => 'Settings'])
 
     {{-- Profile Section --}}
     <livewire:settings.update-profile />

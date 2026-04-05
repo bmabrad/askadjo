@@ -1,12 +1,5 @@
 <div>
-    {{-- Header --}}
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)">
-        <div style="display:flex;align-items:center;gap:0.75rem">
-            <a href="javascript:history.back()" style="color:var(--text-secondary);text-decoration:none;font-size:1.25rem">&larr;</a>
-            <h1 style="font-size:1.25rem;font-weight:700;margin:0;color:var(--text-primary)">Quick Reference</h1>
-        </div>
-        <a href="{{ route('strat-chat') }}" style="color:var(--close-color, #8C7A5E);text-decoration:none;font-size:1.25rem">&times;</a>
-    </div>
+    @include('partials.page-header', ['title' => 'Quick Reference'])
 
     {{-- Intro Text (visible on card 0) --}}
     <div style="margin-bottom:1rem;{{ $currentCard > 0 ? 'display:none' : '' }}">

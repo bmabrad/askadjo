@@ -12,13 +12,25 @@
     @coaching-failed.window="coaching = false; pendingText = null; pendingScreenshots = []; clearTimeout(coachingTimer)"
     x-init="$nextTick(() => { $refs.chatContainer && ($refs.chatContainer.scrollTop = $refs.chatContainer.scrollHeight) })"
 >
+    @include('partials.page-header', ['title' => 'Strat Chat', 'showClose' => false])
     {{-- Chat Thread --}}
     <div x-ref="chatContainer" style="overflow-y:auto;padding-bottom:1rem">
         @if($sessions->isEmpty())
-            {{-- Welcome Message (coach bubble, left-aligned) --}}
+            {{-- Welcome Message (left-aligned with Adjo avatar) --}}
             <div style="margin:2rem 0;display:flex;justify-content:flex-start">
-                <div style="padding:1rem;background:var(--coach-bubble);border:1px solid var(--coach-bubble-border);border-radius:16px 16px 16px 4px;max-width:85%">
-                    <p style="margin:0;font-size:0.9375rem;line-height:1.5;color:var(--text-primary)">Paste your first conversation to get started.</p>
+                <div style="max-width:85%">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                        <svg width="18" height="20" viewBox="0 0 124 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--brand-gold)">
+                            <path d="M54 44 L54 34 L58 38 L62 28 L66 38 L70 34 L70 44" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round"/>
+                            <circle cx="62" cy="58" r="14" fill="none" stroke="currentColor" stroke-width="5.5"/>
+                            <path d="M48 68 Q44 86 38 102 L86 102 Q80 86 76 68" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round"/>
+                            <path d="M34 102 L90 102 Q94 102 94 106 L94 112 Q94 116 90 116 L34 116 Q30 116 30 112 L30 106 Q30 102 34 102 Z" fill="none" stroke="currentColor" stroke-width="5.5"/>
+                        </svg>
+                        <span style="font-size:11px;font-weight:700;color:var(--brand-gold)">Adjo</span>
+                    </div>
+                    <div style="padding:12px 16px;background:var(--bg-card);border:1px solid var(--border-card);border-radius:12px">
+                        <p style="margin:0;font-size:13px;line-height:1.5;color:var(--text-primary)">Paste your first conversation to get started.</p>
+                    </div>
                 </div>
             </div>
         @else
@@ -48,8 +60,8 @@
 
                 {{-- User Bubble (right-aligned) --}}
                 <div style="display:flex;justify-content:flex-end;margin-bottom:0.75rem">
-                    <div style="max-width:80%">
-                        <div style="padding:0.875rem 1rem;background:var(--bg-input);border-radius:16px 16px 4px 16px">
+                    <div style="max-width:75%">
+                        <div style="padding:12px 16px;background:var(--brand-gold);border-radius:18px 18px 4px 18px">
                             @if($session->input_type === \App\Enums\InputType::Screenshot && $session->screenshot_path)
                                 <div x-data="{ lightbox: false, current: 0 }">
                                     <div style="display:flex;gap:0.375rem;flex-wrap:wrap">
@@ -87,7 +99,7 @@
                                     </div>
                                 </div>
                             @elseif($session->raw_text)
-                                <p style="margin:0;font-size:0.9375rem;line-height:1.5;color:var(--text-primary);white-space:pre-line">{{ Str::limit($session->raw_text, 200) }}</p>
+                                <p style="margin:0;font-size:13px;line-height:1.5;color:var(--user-bubble-text);white-space:pre-line">{{ Str::limit($session->raw_text, 200) }}</p>
                             @endif
                         </div>
                         {{-- Contact label below user bubble --}}
@@ -103,9 +115,19 @@
                     </div>
                 </div>
 
-                {{-- Coach Bubble (left-aligned) --}}
+                {{-- AI Response (left-aligned) --}}
                 <div style="display:flex;justify-content:flex-start;margin-bottom:1.25rem">
                     <div style="max-width:85%">
+                        {{-- Avatar + name row --}}
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                            <svg width="18" height="20" viewBox="0 0 124 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--brand-gold)">
+                                <path d="M54 44 L54 34 L58 38 L62 28 L66 38 L70 34 L70 44" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round"/>
+                                <circle cx="62" cy="58" r="14" fill="none" stroke="currentColor" stroke-width="5.5"/>
+                                <path d="M48 68 Q44 86 38 102 L86 102 Q80 86 76 68" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round"/>
+                                <path d="M34 102 L90 102 Q94 102 94 106 L94 112 Q94 116 90 116 L34 116 Q30 116 30 112 L30 106 Q30 102 34 102 Z" fill="none" stroke="currentColor" stroke-width="5.5"/>
+                            </svg>
+                            <span style="font-size:11px;font-weight:700;color:var(--brand-gold)">Adjo</span>
+                        </div>
                         <livewire:coaching-result :session="$session" :key="'session-'.$session->id" />
                     </div>
                 </div>
@@ -139,8 +161,8 @@
         {{-- Optimistic User Bubble (right-aligned, shown immediately on submit) --}}
         <template x-if="coaching && (pendingText || pendingScreenshots.length > 0)">
             <div style="display:flex;justify-content:flex-end;margin-bottom:0.75rem">
-                <div style="max-width:80%">
-                    <div style="padding:0.875rem 1rem;background:var(--bg-input);border-radius:16px 16px 4px 16px">
+                <div style="max-width:75%">
+                    <div style="padding:12px 16px;background:var(--brand-gold);border-radius:18px 18px 4px 18px">
                         <template x-if="pendingScreenshots.length > 0">
                             <div style="display:flex;gap:0.375rem;flex-wrap:wrap">
                                 <template x-for="(src, i) in pendingScreenshots" :key="i">
@@ -149,7 +171,7 @@
                             </div>
                         </template>
                         <template x-if="pendingText">
-                            <p style="margin:0;font-size:0.9375rem;line-height:1.5;color:var(--text-primary);white-space:pre-line" x-text="pendingText.substring(0, 200) + (pendingText.length > 200 ? '…' : '')"></p>
+                            <p style="margin:0;font-size:13px;line-height:1.5;color:var(--user-bubble-text);white-space:pre-line" x-text="pendingText.substring(0, 200) + (pendingText.length > 200 ? '…' : '')"></p>
                         </template>
                     </div>
                     <div style="text-align:right;margin-top:0.25rem;padding-right:0.25rem">
@@ -159,17 +181,28 @@
             </div>
         </template>
 
-        {{-- Typing Indicator (coach bubble, left-aligned, client-side Alpine state) --}}
+        {{-- Typing Indicator (left-aligned with Adjo avatar) --}}
         <div
             x-show="coaching"
             x-cloak
             style="display:flex;justify-content:flex-start;margin-bottom:0.75rem"
         >
-            <div style="padding:1rem;background:var(--coach-bubble);border:1px solid var(--coach-bubble-border);border-radius:16px 16px 16px 4px">
-                <div style="display:flex;gap:0.375rem">
-                    <span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);animation:pulse 1.4s ease-in-out infinite"></span>
-                    <span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);animation:pulse 1.4s ease-in-out 0.2s infinite"></span>
-                    <span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);animation:pulse 1.4s ease-in-out 0.4s infinite"></span>
+            <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                    <svg width="18" height="20" viewBox="0 0 124 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--brand-gold)">
+                        <path d="M54 44 L54 34 L58 38 L62 28 L66 38 L70 34 L70 44" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round"/>
+                        <circle cx="62" cy="58" r="14" fill="none" stroke="currentColor" stroke-width="5.5"/>
+                        <path d="M48 68 Q44 86 38 102 L86 102 Q80 86 76 68" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round"/>
+                        <path d="M34 102 L90 102 Q94 102 94 106 L94 112 Q94 116 90 116 L34 116 Q30 116 30 112 L30 106 Q30 102 34 102 Z" fill="none" stroke="currentColor" stroke-width="5.5"/>
+                    </svg>
+                    <span style="font-size:11px;font-weight:700;color:var(--brand-gold)">Adjo</span>
+                </div>
+                <div style="padding:12px 16px;background:var(--bg-card);border:1px solid var(--border-card);border-radius:12px">
+                    <div style="display:flex;gap:0.375rem">
+                        <span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);animation:pulse 1.4s ease-in-out infinite"></span>
+                        <span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);animation:pulse 1.4s ease-in-out 0.2s infinite"></span>
+                        <span style="width:8px;height:8px;border-radius:50%;background:var(--text-muted);animation:pulse 1.4s ease-in-out 0.4s infinite"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -177,7 +210,7 @@
     </div>
 
     {{-- Input Bar --}}
-    <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border)">
+    <div style="border-top:1px solid var(--border-card);padding:12px 18px 32px">
         <livewire:coach-input :chatMode="true" />
     </div>
 </div>

@@ -109,32 +109,47 @@
                 </div>
             @endif
 
-            <div style="display:flex;gap:0.5rem;align-items:flex-end;margin-bottom:0.75rem">
-                <textarea
-                    x-ref="mainInput"
-                    wire:model="textInput"
-                    @paste="handlePaste($event)"
-                    @keydown="handleKeydown($event)"
-                    placeholder="Paste or type here..."
-                    rows="2"
-                    style="flex:1;padding:0.75rem 1rem;font-size:16px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);outline:none;resize:vertical;font-family:inherit;min-height:48px"
-                ></textarea>
-                <label style="flex-shrink:0;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;cursor:pointer;color:var(--text-muted);font-size:1.25rem">
-                    📎
-                    <input type="file" wire:model="screenshots" accept="image/jpeg,image/png,image/webp" multiple style="display:none" x-ref="fileInput" @change="hasImages = $el.files.length > 0; uploading = true">
-                </label>
-            </div>
-
             {{-- Image upload indicator --}}
-            <div x-show="uploading" x-cloak style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0;margin-bottom:0.5rem">
+            <div x-show="uploading" x-cloak style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem">
                 <svg style="width:16px;height:16px;color:var(--text-muted);animation:spin 1s linear infinite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="12"/></svg>
                 <span style="font-size:0.8125rem;color:var(--text-muted)">Uploading image...</span>
             </div>
 
             @error('textInput') <div style="font-size:0.8125rem;color:var(--error);margin-bottom:0.5rem">{{ $message }}</div> @enderror
 
-            {{-- Submit --}}
-            <button @click="dispatchStarted(); $wire.submit()" style="width:100%;height:48px;font-size:1rem;font-weight:600;background:var(--btn-primary-bg);color:var(--btn-primary-text);border:none;border-radius:8px;cursor:pointer">Ask Me</button>
+            {{-- Input Row: paperclip + text field + send button --}}
+            <div style="display:flex;align-items:flex-end;gap:10px">
+                {{-- Paperclip --}}
+                <label style="flex-shrink:0;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(45deg)">
+                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                    </svg>
+                    <input type="file" wire:model="screenshots" accept="image/jpeg,image/png,image/webp" multiple style="display:none" x-ref="fileInput" @change="hasImages = $el.files.length > 0; uploading = true">
+                </label>
+
+                {{-- Text field --}}
+                <textarea
+                    x-ref="mainInput"
+                    wire:model="textInput"
+                    @paste="handlePaste($event)"
+                    @keydown="handleKeydown($event)"
+                    placeholder="Drop texts in here..."
+                    rows="1"
+                    style="flex:1;padding:12px 18px;font-size:14px;background:var(--bg-card);border:1px solid var(--border-card);border-radius:22px;color:var(--text-primary);outline:none;resize:none;font-family:inherit;min-height:38px;max-height:120px;line-height:1.4"
+                ></textarea>
+
+                {{-- Send button --}}
+                <button
+                    @click="if(canSubmit()) { dispatchStarted(); $wire.submit(); }"
+                    style="flex-shrink:0;width:38px;height:38px;border-radius:50%;background:var(--brand-gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center"
+                    aria-label="Send"
+                >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--user-bubble-text)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="19" x2="12" y2="5"/>
+                        <polyline points="5 12 12 5 19 12"/>
+                    </svg>
+                </button>
+            </div>
 
         </div>
     @endif

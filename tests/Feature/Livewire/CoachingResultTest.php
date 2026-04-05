@@ -13,15 +13,54 @@ beforeEach(function () {
     $this->contact = Contact::factory()->create(['user_id' => $this->user->id]);
 });
 
-it('renders with a completed session', function () {
+it('renders the read card with situation text', function () {
     $session = CoachingSession::factory()->create(['contact_id' => $this->contact->id]);
 
     Livewire::test(CoachingResult::class, ['session' => $session])
         ->assertOk()
+        ->assertSee('THE READ')
         ->assertSee($session->situation_read);
 });
 
-it('displays all reply options with copy buttons', function () {
+it('renders send this card with recommended reply', function () {
+    $session = CoachingSession::factory()->create([
+        'contact_id' => $this->contact->id,
+        'reply_options' => [
+            ['label' => 'Recommended', 'text' => 'Hey, sounds fun', 'strategy' => 'Playful', 'why' => 'Keeps it light.'],
+        ],
+    ]);
+
+    Livewire::test(CoachingResult::class, ['session' => $session])
+        ->assertSee('SEND THIS')
+        ->assertSee('Hey, sounds fun')
+        ->assertSee('Copy');
+});
+
+it('renders why this works card', function () {
+    $session = CoachingSession::factory()->create(['contact_id' => $this->contact->id]);
+
+    Livewire::test(CoachingResult::class, ['session' => $session])
+        ->assertSee('WHY THIS WORKS');
+});
+
+it('expands why this works on toggle', function () {
+    $session = CoachingSession::factory()->create([
+        'contact_id' => $this->contact->id,
+        'reply_options' => [
+            ['label' => 'Recommended', 'text' => 'Test reply', 'strategy' => 'Scarce', 'why' => 'Pulls back without being reactive.'],
+        ],
+    ]);
+
+    Livewire::test(CoachingResult::class, ['session' => $session])
+        ->assertDontSee('Pulls back without being reactive.')
+        ->call('toggleWhy')
+        ->assertSee('Pulls back without being reactive.')
+        ->assertSee('Scarce')
+        ->call('toggleWhy')
+        ->assertDontSee('Pulls back without being reactive.');
+});
+
+it('shows alternative replies when more options toggled', function () {
     $session = CoachingSession::factory()->create([
         'contact_id' => $this->contact->id,
         'reply_options' => [
@@ -32,63 +71,27 @@ it('displays all reply options with copy buttons', function () {
     ]);
 
     Livewire::test(CoachingResult::class, ['session' => $session])
-        ->assertSee('Try one of these:')
         ->assertSee('First reply')
+        ->assertDontSee('Second reply')
+        ->assertDontSee('Third reply')
+        ->assertSee('More Options')
+        ->call('toggleOptions')
         ->assertSee('Second reply')
         ->assertSee('Third reply')
-        ->assertSee('Copy');
+        ->assertSee('OPTION 2')
+        ->assertSee('OPTION 3');
 });
 
-it('shows more section with principles on toggle', function () {
+it('renders principles inside the read card', function () {
     $session = CoachingSession::factory()->create([
         'contact_id' => $this->contact->id,
         'applicable_principles' => ['Intermittent Reinforcement', 'The Evaluator Frame'],
     ]);
 
     Livewire::test(CoachingResult::class, ['session' => $session])
-        ->assertSee('More')
-        ->assertDontSee('The Evaluator Frame')
-        ->call('toggleMore')
+        ->assertSee('THE READ')
         ->assertSee('Intermittent Reinforcement')
         ->assertSee('The Evaluator Frame');
-});
-
-it('shows principle tags inline preview', function () {
-    $session = CoachingSession::factory()->create([
-        'contact_id' => $this->contact->id,
-        'applicable_principles' => ['Intermittent Reinforcement'],
-    ]);
-
-    Livewire::test(CoachingResult::class, ['session' => $session])
-        ->assertSee('intermittent_reinforcement');
-});
-
-it('toggles why expand and collapse inside more section', function () {
-    $session = CoachingSession::factory()->create(['contact_id' => $this->contact->id]);
-
-    Livewire::test(CoachingResult::class, ['session' => $session])
-        ->assertDontSee($session->reply_options[0]['why'])
-        ->call('toggleMore')
-        ->assertDontSee($session->reply_options[0]['why'])
-        ->call('toggleWhy', 0)
-        ->assertSee($session->reply_options[0]['why'])
-        ->call('toggleWhy', 0)
-        ->assertDontSee($session->reply_options[0]['why']);
-});
-
-it('shows strategy tag in why explanation', function () {
-    $session = CoachingSession::factory()->create([
-        'contact_id' => $this->contact->id,
-        'reply_options' => [
-            ['label' => 'Recommended', 'text' => 'Test reply', 'strategy' => 'Scarce', 'why' => 'Pulls back without being reactive.'],
-        ],
-    ]);
-
-    Livewire::test(CoachingResult::class, ['session' => $session])
-        ->call('toggleMore')
-        ->call('toggleWhy', 0)
-        ->assertSee('Scarce')
-        ->assertSee('Pulls back without being reactive.');
 });
 
 it('renders gracefully with empty reply options', function () {
@@ -102,7 +105,7 @@ it('renders gracefully with empty reply options', function () {
     Livewire::test(CoachingResult::class, ['session' => $session])
         ->assertOk()
         ->assertSee('You sent the last message. Ball is in their court.')
-        ->assertDontSee('Try one of these:');
+        ->assertDontSee('SEND THIS');
 });
 
 it('displays error state when AI failed', function () {

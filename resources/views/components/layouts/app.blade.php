@@ -49,6 +49,7 @@
             --pill-bg: #252525;
             --pill-border: #444444;
             --pill-text: #CCCCCC;
+            --user-bubble-text: #0E0E18;
             --coach-bubble: #1A3A5C;
             --coach-bubble-border: #1E4A6E;
             /* Menu-specific tokens */
@@ -89,6 +90,7 @@
             --pill-bg: #f0efed;
             --pill-border: #d0cfcc;
             --pill-text: #444444;
+            --user-bubble-text: #FFFFFF;
             --coach-bubble: #dbeafe;
             --coach-bubble-border: #bfdbfe;
             /* Menu-specific tokens */
@@ -124,12 +126,6 @@
             .phone-frame { border-left: none; border-right: none; }
         }
 
-        /* ── Nav ── */
-        .nav { position: sticky; top: 0; z-index: 100; background: var(--bg-nav); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); transition: background-color var(--transition-speed), border-color var(--transition-speed); }
-        .nav-inner { padding: 0 24px; height: 60px; display: flex; align-items: center; }
-        .nav-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; padding: 4px 0; }
-        .nav-logo-text { font-size: 26px; font-weight: 800; letter-spacing: 1.5px; transform: scaleY(0.85); display: inline-block; color: var(--text-primary); }
-
         .app-content {
             padding: 1rem;
         }
@@ -143,22 +139,6 @@
     "
 >
     <div class="phone-frame">
-        <!-- Nav -->
-        <nav class="nav">
-            <div class="nav-inner">
-                <div class="nav-logo" x-data @click="$dispatch('toggle-slide-menu')">
-                    {{-- King Chess SVG (AskAdjo_King_LOGO.svg — uses currentColor) --}}
-                    <svg width="38" height="42" viewBox="0 0 124 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:relative;top:-4px;color:#C8943E">
-                        <path d="M54 44 L54 34 L58 38 L62 28 L66 38 L70 34 L70 44" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round"/>
-                        <circle cx="62" cy="58" r="14" fill="none" stroke="currentColor" stroke-width="5.5"/>
-                        <path d="M48 68 Q44 86 38 102 L86 102 Q80 86 76 68" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round"/>
-                        <path d="M34 102 L90 102 Q94 102 94 106 L94 112 Q94 116 90 116 L34 116 Q30 116 30 112 L30 106 Q30 102 34 102 Z" fill="none" stroke="currentColor" stroke-width="5.5"/>
-                    </svg>
-                    <span class="nav-logo-text">AskAdjo</span>
-                </div>
-            </div>
-        </nav>
-
         {{-- Slide Menu --}}
         <livewire:slide-menu />
 

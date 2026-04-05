@@ -8,26 +8,22 @@ use Livewire\Component;
 class CoachingResult extends Component
 {
     public CoachingSession $session;
-    public bool $showMore = false;
-    public array $expandedWhy = [];
+    public bool $showWhy = false;
+    public bool $showOptions = false;
 
     public function mount(CoachingSession $session): void
     {
         $this->session = $session;
     }
 
-    public function toggleMore(): void
+    public function toggleWhy(): void
     {
-        $this->showMore = ! $this->showMore;
+        $this->showWhy = ! $this->showWhy;
     }
 
-    public function toggleWhy(int $index): void
+    public function toggleOptions(): void
     {
-        if (in_array($index, $this->expandedWhy)) {
-            $this->expandedWhy = array_values(array_diff($this->expandedWhy, [$index]));
-        } else {
-            $this->expandedWhy[] = $index;
-        }
+        $this->showOptions = ! $this->showOptions;
     }
 
     public function render()
