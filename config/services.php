@@ -36,7 +36,17 @@ return [
     ],
 
     'anthropic' => [
-        'api_key' => env('ANTHROPIC_API_KEY'),
+        'api_key' => env('ANTHROPIC_API_KEY') ?: (function () {
+            // Fallback: read directly from .env if system env overrides with empty value
+            $envFile = base_path('.env');
+            if (file_exists($envFile)) {
+                $contents = file_get_contents($envFile);
+                if (preg_match('/^ANTHROPIC_API_KEY=["\']?([^"\'\\s]+)["\']?$/m', $contents, $m)) {
+                    return $m[1];
+                }
+            }
+            return null;
+        })(),
         'model' => env('ANTHROPIC_MODEL', 'claude-sonnet-4-20250514'),
         'timeout' => env('ANTHROPIC_TIMEOUT', 60),
     ],
