@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'ai_raw_response',
     'prompt_tokens',
     'completion_tokens',
+    'cache_creation_input_tokens',
+    'cache_read_input_tokens',
 ])]
 class CoachingSession extends Model
 {

@@ -71,6 +71,61 @@ it('handles API error gracefully', function () {
         ->toThrow(\RuntimeException::class);
 });
 
+it('sends system prompt with cache control', function () {
+    Http::fake([
+        'api.anthropic.com/*' => Http::response([
+            'content' => [['type' => 'text', 'text' => json_encode([
+                'situation_read' => 'Test',
+                'applicable_principles' => [],
+                'reply_options' => [],
+            ])]],
+            'usage' => ['input_tokens' => 100, 'output_tokens' => 50],
+        ]),
+    ]);
+
+    $service = new AIService('fake-key', 'claude-sonnet-4-20250514');
+    $service->analyseConversation('Test text');
+
+    Http::assertSent(function ($request) {
+        $system = $request['system'];
+
+        // System must be an array (not a plain string)
+        if (! is_array($system)) {
+            return false;
+        }
+
+        // First element must have cache_control set to ephemeral
+        return ($system[0]['type'] ?? '') === 'text'
+            && ! empty($system[0]['text'])
+            && ($system[0]['cache_control']['type'] ?? '') === 'ephemeral'
+            && $request->header('anthropic-beta')[0] === 'prompt-caching-2024-07-31';
+    });
+});
+
+it('logs cache token usage from API response', function () {
+    Http::fake([
+        'api.anthropic.com/*' => Http::response([
+            'content' => [['type' => 'text', 'text' => json_encode([
+                'situation_read' => 'Test',
+                'applicable_principles' => [],
+                'reply_options' => [],
+            ])]],
+            'usage' => [
+                'input_tokens' => 100,
+                'output_tokens' => 50,
+                'cache_creation_input_tokens' => 15000,
+                'cache_read_input_tokens' => 0,
+            ],
+        ]),
+    ]);
+
+    $service = new AIService('fake-key', 'claude-sonnet-4-20250514');
+    $result = $service->analyseConversation('Test text');
+
+    expect($result['cache_creation_input_tokens'])->toBe(15000)
+        ->and($result['cache_read_input_tokens'])->toBe(0);
+});
+
 it('handles malformed JSON response', function () {
     Http::fake([
         'api.anthropic.com/*' => Http::response([

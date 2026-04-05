@@ -39,6 +39,8 @@ class CoachingService
                 'ai_raw_response' => $result['raw_response'],
                 'prompt_tokens' => $result['prompt_tokens'],
                 'completion_tokens' => $result['completion_tokens'],
+                'cache_creation_input_tokens' => $result['cache_creation_input_tokens'] ?? null,
+                'cache_read_input_tokens' => $result['cache_read_input_tokens'] ?? null,
             ]);
 
             // Write the updated summary back to the contact
@@ -90,6 +92,8 @@ class CoachingService
                 'ai_raw_response' => $result['raw_response'],
                 'prompt_tokens' => $result['prompt_tokens'],
                 'completion_tokens' => $result['completion_tokens'],
+                'cache_creation_input_tokens' => $result['cache_creation_input_tokens'] ?? null,
+                'cache_read_input_tokens' => $result['cache_read_input_tokens'] ?? null,
             ]);
 
             // Write the updated summary back to the resolved contact

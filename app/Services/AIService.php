@@ -24,10 +24,17 @@ class AIService implements AIServiceInterface
         $response = Http::withHeaders([
             'x-api-key' => $this->apiKey,
             'anthropic-version' => '2023-06-01',
+            'anthropic-beta' => 'prompt-caching-2024-07-31',
         ])->timeout((int) config('services.anthropic.timeout', 60))->post('https://api.anthropic.com/v1/messages', [
             'model' => $this->model,
             'max_tokens' => 1024,
-            'system' => CoachingPrompt::system(),
+            'system' => [
+                [
+                    'type' => 'text',
+                    'text' => CoachingPrompt::system(),
+                    'cache_control' => ['type' => 'ephemeral'],
+                ],
+            ],
             'messages' => [
                 ['role' => 'user', 'content' => $content],
             ],
@@ -71,6 +78,8 @@ class AIService implements AIServiceInterface
             'raw_response' => $rawText,
             'prompt_tokens' => $body['usage']['input_tokens'] ?? 0,
             'completion_tokens' => $body['usage']['output_tokens'] ?? 0,
+            'cache_creation_input_tokens' => $body['usage']['cache_creation_input_tokens'] ?? null,
+            'cache_read_input_tokens' => $body['usage']['cache_read_input_tokens'] ?? null,
         ];
     }
 
