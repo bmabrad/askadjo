@@ -74,6 +74,54 @@ class AIService implements AIServiceInterface
         ];
     }
 
+    public function generateAlternative(string $situationRead, string $existingReply): array
+    {
+        $prompt = <<<PROMPT
+You previously analysed a dating conversation and gave this situation read:
+
+"{$situationRead}"
+
+Your recommended reply was:
+
+"{$existingReply}"
+
+Now provide ONE alternative reply using a DIFFERENT strategy. Respond in valid JSON only:
+{
+  "text": "The alternative message to send",
+  "strategy": "Scarce|Direct|Playful|Reframe|Challenge|Qualify",
+  "why": "1-2 sentences explaining why this works"
+}
+
+Do not include any text outside the JSON object.
+PROMPT;
+
+        $response = Http::withHeaders([
+            'x-api-key' => $this->apiKey,
+            'anthropic-version' => '2023-06-01',
+        ])->timeout((int) config('services.anthropic.timeout', 60))->post('https://api.anthropic.com/v1/messages', [
+            'model' => $this->model,
+            'max_tokens' => 256,
+            'messages' => [
+                ['role' => 'user', 'content' => $prompt],
+            ],
+        ]);
+
+        if ($response->failed()) {
+            throw new \RuntimeException('Claude API request failed: ' . $response->status());
+        }
+
+        $body = $response->json();
+        $rawText = $body['content'][0]['text'] ?? '';
+        $parsed = $this->parseResponse($rawText);
+
+        return [
+            'label' => 'Alternative',
+            'text' => $parsed['text'] ?? '',
+            'strategy' => $parsed['strategy'] ?? '',
+            'why' => $parsed['why'] ?? '',
+        ];
+    }
+
     protected function buildContent(?string $text, array $screenshots, ?string $contactSummary): array
     {
         $content = [];

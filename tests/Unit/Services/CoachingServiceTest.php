@@ -69,6 +69,11 @@ it('rethrows AI failure so caller can handle it', function () {
         {
             throw new \RuntimeException('API error');
         }
+
+        public function generateAlternative(string $situationRead, string $existingReply): array
+        {
+            return [];
+        }
     };
 
     $service = new CoachingService($failingAI);

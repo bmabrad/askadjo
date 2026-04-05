@@ -28,4 +28,13 @@ interface AIServiceInterface
         array $screenshots = [],
         ?string $contactSummary = null
     ): array;
+
+    /**
+     * Generate an alternative reply for an existing coaching session.
+     *
+     * @param  string  $situationRead  The original situation analysis
+     * @param  string  $existingReply  The recommended reply already given
+     * @return array{text: string, strategy: string, why: string}
+     */
+    public function generateAlternative(string $situationRead, string $existingReply): array;
 }

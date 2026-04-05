@@ -60,26 +60,22 @@ it('expands why this works on toggle', function () {
         ->assertDontSee('Pulls back without being reactive.');
 });
 
-it('shows alternative replies when more options toggled', function () {
+it('generates alternative reply when more options clicked', function () {
     $session = CoachingSession::factory()->create([
         'contact_id' => $this->contact->id,
         'reply_options' => [
             ['label' => 'Recommended', 'text' => 'First reply', 'strategy' => 'Playful', 'why' => 'Because playful.'],
-            ['label' => 'Alternative', 'text' => 'Second reply', 'strategy' => 'Direct', 'why' => 'Because direct.'],
-            ['label' => 'Alternative', 'text' => 'Third reply', 'strategy' => 'Scarce', 'why' => 'Because scarce.'],
         ],
     ]);
 
     Livewire::test(CoachingResult::class, ['session' => $session])
         ->assertSee('First reply')
-        ->assertDontSee('Second reply')
-        ->assertDontSee('Third reply')
         ->assertSee('More Options')
         ->call('toggleOptions')
-        ->assertSee('Second reply')
-        ->assertSee('Third reply')
-        ->assertSee('OPTION 2')
-        ->assertSee('OPTION 3');
+        ->assertSee('OPTION 2');
+
+    // Verify the alternative was persisted to the session
+    expect($session->fresh()->reply_options)->toHaveCount(2);
 });
 
 it('renders principles inside the read card', function () {

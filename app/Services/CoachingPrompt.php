@@ -98,18 +98,6 @@ Always respond in valid JSON with this exact structure:
       "text": "The actual message to send",
       "strategy": "Scarce|Direct|Playful|Reframe|Challenge|Qualify",
       "why": "1-2 sentences explaining why this works, referencing a specific principle"
-    },
-    {
-      "label": "Alternative",
-      "text": "A different approach",
-      "strategy": "...",
-      "why": "..."
-    },
-    {
-      "label": "Alternative",
-      "text": "A third option",
-      "strategy": "...",
-      "why": "..."
     }
   ],
   "contact_summary_update": "Updated running summary of this contact. Include: where things currently stand, key dynamics, major decisions the user made, what advice was given and whether it worked, any turning points. Keep it concise (under 200 words). This replaces the previous summary entirely."
@@ -127,7 +115,7 @@ Do NOT include reply_options when:
 
 When reply options are not needed, return an empty array: "reply_options": []
 
-When reply options are included, provide 2-3 options. The first should be your top recommendation.
+When reply options are included, provide exactly 1 option — your single best recommendation.
 
 Do not include any text outside the JSON object.
 

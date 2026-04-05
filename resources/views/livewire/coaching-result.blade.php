@@ -39,12 +39,15 @@
                             <span x-show="!copied">Copy</span>
                             <span x-show="copied" x-cloak>Copied!</span>
                         </button>
-                        @if(count($session->reply_options) > 1)
-                            <button
-                                wire:click="toggleOptions"
-                                style="padding:6px 14px;font-size:11px;font-weight:600;background:transparent;border:1px solid var(--text-muted);border-radius:8px;cursor:pointer;color:var(--text-muted)"
-                            >More Options</button>
-                        @endif
+                        <button
+                            wire:click="toggleOptions"
+                            wire:loading.attr="disabled"
+                            wire:target="toggleOptions"
+                            style="padding:6px 14px;font-size:11px;font-weight:600;background:transparent;border:1px solid var(--text-muted);border-radius:8px;cursor:pointer;color:var(--text-muted)"
+                        >
+                            <span wire:loading.remove wire:target="toggleOptions">More Options</span>
+                            <span wire:loading wire:target="toggleOptions">Loading...</span>
+                        </button>
                     </div>
                 </div>
             </div>
