@@ -31,7 +31,7 @@
                     <path d="M48 68 Q44 86 38 102 L86 102 Q80 86 76 68" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round"/>
                     <path d="M34 102 L90 102 Q94 102 94 106 L94 112 Q94 116 90 116 L34 116 Q30 116 30 112 L30 106 Q30 102 34 102 Z" fill="none" stroke="currentColor" stroke-width="5.5"/>
                 </svg>
-                <span style="font-size:26px;font-weight:800;letter-spacing:1.5px;transform:scaleY(0.85);display:inline-block;color:var(--text-primary)">AskAdjo.ai</span>
+                <span style="font-size:26px;font-weight:800;letter-spacing:1.5px;transform:scaleY(0.85);display:inline-block;color:var(--text-primary)">AskAdjo</span>
             </div>
             <button wire:click="close" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:none;border:none;cursor:pointer;border-radius:8px;color:var(--close-color, #8C7A5E)">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>

@@ -154,7 +154,7 @@
                         <path d="M48 68 Q44 86 38 102 L86 102 Q80 86 76 68" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round"/>
                         <path d="M34 102 L90 102 Q94 102 94 106 L94 112 Q94 116 90 116 L34 116 Q30 116 30 112 L30 106 Q30 102 34 102 Z" fill="none" stroke="currentColor" stroke-width="5.5"/>
                     </svg>
-                    <span class="nav-logo-text">AskAdjo.ai</span>
+                    <span class="nav-logo-text">AskAdjo</span>
                 </div>
             </div>
         </nav>
