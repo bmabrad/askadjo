@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Contracts\AIServiceInterface;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class AIService implements AIServiceInterface
@@ -33,8 +34,25 @@ class AIService implements AIServiceInterface
         ]);
 
         if ($response->failed()) {
+            $body = $response->body();
+            $status = $response->status();
+
+            // Log with context for operational monitoring
+            Log::error('Claude API request failed', [
+                'status' => $status,
+                'body' => $body,
+            ]);
+
+            // Detect credit/billing issues
+            if (str_contains($body, 'credit balance') || str_contains($body, 'billing')) {
+                Log::critical('Anthropic API credits exhausted — top up required', [
+                    'status' => $status,
+                ]);
+                throw new \RuntimeException('SERVICE_CREDITS_EXHAUSTED');
+            }
+
             throw new \RuntimeException(
-                'Claude API request failed: ' . $response->status() . ' ' . $response->body()
+                'Claude API request failed: ' . $status . ' ' . $body
             );
         }
 

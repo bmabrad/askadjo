@@ -23,6 +23,10 @@
         @endif
     @endunless
 
+    @if($error)
+        <div style="font-size:0.875rem;color:var(--error);text-align:center;padding:0.625rem 1rem;margin-bottom:0.75rem;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.2);border-radius:8px">{{ $error }}</div>
+    @endif
+
     @if($isSubmitting)
         {{-- Disabled input while submitting --}}
         <div style="display:flex;gap:0.5rem;align-items:flex-end;margin-bottom:0.75rem;opacity:0.5;pointer-events:none">
@@ -129,9 +133,6 @@
             {{-- Submit --}}
             <button @click="dispatchStarted(); $wire.submit()" style="width:100%;height:48px;font-size:1rem;font-weight:600;background:var(--btn-primary-bg);color:var(--btn-primary-text);border:none;border-radius:8px;cursor:pointer">Coach Me</button>
 
-            @if($error)
-                <div style="margin-top:0.75rem;font-size:0.875rem;color:var(--error);text-align:center">{{ $error }}</div>
-            @endif
         </div>
     @endif
 </div>

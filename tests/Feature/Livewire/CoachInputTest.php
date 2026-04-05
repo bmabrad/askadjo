@@ -141,7 +141,7 @@ it('shows error on failure', function () {
         ->set('inputMode', 'text')
         ->set('textInput', 'Her: Hey\nMe: Hello')
         ->call('submit')
-        ->assertSet('error', 'Something went wrong. Try a cleaner screenshot or paste the text instead.');
+        ->assertSet('error', 'Something went wrong. Please try again in a few minutes.');
 });
 
 it('locks contact when preset via mount', function () {

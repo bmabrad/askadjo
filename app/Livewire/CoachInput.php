@@ -155,7 +155,13 @@ class CoachInput extends Component
             $this->dispatch('coach-response-received');
         } catch (\Throwable $e) {
             report($e);
-            $this->error = "Something went wrong. Try a cleaner screenshot or paste the text instead.";
+
+            if ($e->getMessage() === 'SERVICE_CREDITS_EXHAUSTED') {
+                $this->error = "Our AI service is temporarily unavailable. Please try again in a few minutes.";
+            } else {
+                $this->error = "Something went wrong. Please try again in a few minutes.";
+            }
+
             $this->dispatch('coaching-failed');
         } finally {
             $this->isSubmitting = false;
