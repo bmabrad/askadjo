@@ -34,30 +34,7 @@
                 </div>
             </div>
         @else
-            @php $lastDate = null; @endphp
             @foreach($sessions as $session)
-                @php
-                    $sessionDate = $session->created_at->format('Y-m-d');
-                    $showDivider = $sessionDate !== $lastDate;
-                    $lastDate = $sessionDate;
-                @endphp
-
-                @if($showDivider)
-                    <div style="display:flex;align-items:center;gap:0.75rem;margin:1.25rem 0">
-                        <div style="flex:1;height:1px;background:var(--border)"></div>
-                        <span style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap">
-                            @if($session->created_at->isToday())
-                                Today
-                            @elseif($session->created_at->isYesterday())
-                                Yesterday
-                            @else
-                                {{ $session->created_at->format('F j, Y') }}
-                            @endif
-                        </span>
-                        <div style="flex:1;height:1px;background:var(--border)"></div>
-                    </div>
-                @endif
-
                 {{-- User Bubble (right-aligned) --}}
                 <div style="display:flex;justify-content:flex-end;margin-bottom:0.75rem">
                     <div style="max-width:75%">
