@@ -121,6 +121,14 @@ class CoachInput extends Component
 
         $this->isSubmitting = true;
 
+        // Fail fast if API key is not configured
+        if (empty(config('services.anthropic.api_key'))) {
+            $this->error = "AI service is not configured. Please check the API key.";
+            $this->isSubmitting = false;
+            $this->dispatch('coaching-failed');
+            return;
+        }
+
         try {
             $screenshotPaths = [];
 
