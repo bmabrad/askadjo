@@ -162,7 +162,10 @@ class CoachInput extends Component
             // Auto-focus input after response
             $this->dispatch('coach-response-received');
         } catch (\Throwable $e) {
-            report($e);
+            \Illuminate\Support\Facades\Log::error('CoachInput catch block hit', [
+                'message' => $e->getMessage(),
+                'class' => get_class($e),
+            ]);
 
             if ($e->getMessage() === 'SERVICE_CREDITS_EXHAUSTED') {
                 $this->error = "Our AI service is temporarily unavailable. Please try again in a few minutes.";

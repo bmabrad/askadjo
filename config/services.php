@@ -48,7 +48,7 @@ return [
             return null;
         })(),
         'model' => env('ANTHROPIC_MODEL', 'claude-sonnet-4-20250514'),
-        'timeout' => env('ANTHROPIC_TIMEOUT', 60),
+        'timeout' => env('ANTHROPIC_TIMEOUT', 25),
     ],
 
 ];
